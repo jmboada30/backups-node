@@ -1,0 +1,16 @@
+{
+  "name": "backup-db-node",
+  "version": "1.0.0",
+  "description": "Script to backup a MariaDB database",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "jmboada30@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "node-cron": "^3.0.0"
+  }
+}
