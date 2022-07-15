@@ -4,7 +4,6 @@ import cron from 'node-cron';
 import 'dotenv/config';
 
 console.log('Starting backup...');
-console.log('running a task every minute');
 
 const exec = util.promisify(child_process.exec);
 const CONTAINER_NAME = process.env.CONTAINER_NAME;
@@ -47,8 +46,8 @@ async function removeBackupOlds() {
 
   // Find permite buscar archivos en un directorio
   // -type f indica que solo busque archivos
-  // -atime +1 indica que busque archivos que hayan sido accedidos hace un dia
-  const command = `find ./backups -type f -atime +3 -delete`;
+  // -mtime +2 indica que busque archivos que hayan sido accedidos hace dos dias
+  const command = `find ./backups/* -type f -mtime +2 -delete`;
 
   const { stderr } = await exec(command);
 
