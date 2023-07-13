@@ -6,7 +6,7 @@ import 'dotenv/config';
 console.log('Starting backup...');
 
 const exec = util.promisify(child_process.exec);
-const CONTAINER_NAME = process.env.CONTAINER_NAME;
+const CONTAINER_NAME = process.env.CONTAINER_NAME || '';
 const USERNAME = process.env.DB_USERNAME;
 const PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
@@ -23,7 +23,10 @@ async function backupDockerMariaDB() {
     import.meta.url
   );
 
-  const command = `sudo docker exec ${CONTAINER_NAME} mysqldump -u ${USERNAME} -p${PASSWORD} --events --routines --triggers ${DB_NAME} | gzip -c > ${ARCHIVE_PATH}`;
+  let command;
+
+  if (!CONTAINER_NAME) command = `mysqldump -u ${USERNAME} -p${PASSWORD} --events --routines --triggers ${DB_NAME} | gzip -c > ${ARCHIVE_PATH}`;
+  else  command = `sudo docker exec ${CONTAINER_NAME} mysqldump -u ${USERNAME} -p${PASSWORD} --events --routines --triggers ${DB_NAME} | gzip -c > ${ARCHIVE_PATH}`;
 
   const { stderr } = await exec(command);
 
